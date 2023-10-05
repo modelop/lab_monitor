@@ -1,5 +1,5 @@
-# Externally Generated Metrics Monitor
-This python code provides an example of how you would incorporate externally generated metrics into the ModelOp system.
+# Example Custom Metrics Monitor
+This python code provides a very basic example of a custom monitor, including how to use the init and metrics function, as well as how to test locally with a main() function. This initial example shows how you would incorporate externally generated metrics into the ModelOp system.
 It will read any input asset and echo the first row of information returned from that asset.  So if you, for example,
 stored your metrics in an s3 file generated outside of modelop, you can store it as a simple json record.  This monitor
 will then simply read from that asset and echo the json back out.  That will then be transformed into a model test
