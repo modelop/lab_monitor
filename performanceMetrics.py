@@ -1,7 +1,9 @@
 import json
 import pandas as pd
 import modelop.utils as utils
+import modelop.schema.infer as infer
 from pathlib import Path
+from sklearn.metrics import accuracy_score
 
 logger = utils.configure_logger()
 
@@ -12,7 +14,18 @@ logger = utils.configure_logger()
 
 # modelop.init
 def init(init_param):
-	logger = utils.configure_logger()
+    logger = utils.configure_logger()
+    global LABEL_COLUMN
+    global SCORE_COLUMN
+    job_json = init_param
+
+    input_schema_definition = infer.extract_input_schema(job_json)
+    monitoring_parameters = infer.set_monitoring_parameters(
+        schema_json=input_schema_definition, check_schema=True
+    )
+    LABEL_COLUMN = monitoring_parameters['label_column']
+    SCORE_COLUMN = monitoring_parameters['score_column']
+
 
 #
 # This method is the modelops metrics method.  This is always called with a pandas dataframe that is arraylike, and
@@ -29,16 +42,12 @@ def init(init_param):
 
 # modelop.metrics
 def metrics(data: pd.DataFrame):
-	logger.info("Running the metrics function")
+    logger.info("Running the metrics function")
 
-	finalResult = {}
+    accuracy = accuracy_score(data[LABEL_COLUMN], data[SCORE_COLUMN])
+    finalResult = {"accuracy": accuracy.round(4)}
 
-	finalResult["input_data"] = data.iloc[0].to_dict()
-	finalResult["generic_graph"] = {"title" : "Example Horizontal Bar Chart", "x_axis_label": "X Axis", "y_axis_label": "Y Axis", "axis_min_default": -1, "axis_max_default":2.6, "data" : { "data1": [1, 2, 3, 4], "data2": [4, 3, 2, 1] }, "categories": ["cat1", "cat2", "cat3", "cat4"]}
-	finalResult["generic_table"] = [{"data1" : 1, "data2" : 2, "data3" : 3}, {"data1" : 2, "data2" : 3, "data3": 4}, {"data1" :  3, "data2" : 4, "data3" : 5}]
-	finalResult["generic_line_graph"] = { "title" : "Example Line Graph - XY Data", "x_axis_label": "X Axis", "y_axis_label": "Y Axis", "data": { "data1": [[1,100], [3,200], [5, 300]], "data2": [[2, 350], [4, 250], [6, 150]] } }
-
-	yield finalResult
+    yield finalResult
 
 #
 # This main method is utilized to simulate what the engine will do when calling the above metrics function.  It takes
@@ -48,18 +57,14 @@ def metrics(data: pd.DataFrame):
 #
 def main():
 
-	raw_json = Path('example_job.json').read_text()
-	init_param = {'rawJson': raw_json}
+    raw_json = Path('example_job.json').read_text()
+    init_param = {'rawJson': raw_json}
 
-	init(init_param)
+    init(init_param)
+    df = pd.read_csv("german_credit_data.csv")
 
-	data = '''
-	 	{"id":993,"duration_months":36,"credit_amount":3959,"installment_rate":4,"present_residence_since":3,"age_years":30,"number_existing_credits":1,"checking_status":"A11","credit_history":"A32","purpose":"A42","savings_account":"A61","present_employment_since":"A71","debtors_guarantors":"A101","property":"A122","installment_plans":"A143","housing":"A152","job":"A174","number_people_liable":1,"telephone":"A192","foreign_worker":"A201","gender":"male","label_value":0,"score":1}
-	 '''
-	data_dict = json.loads(data)
-	df = pd.DataFrame.from_dict([data_dict])
-	print(json.dumps(next(metrics(df)), indent=2))
+    print(json.dumps(next(metrics(df)), indent=2))
 
 
 if __name__ == '__main__':
-	main()
+    main()

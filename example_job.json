@@ -762,7 +762,7 @@
                   "role": "label",
                   "protectedClass": false,
                   "positiveClassLabel": 1,
-                  "name": "label_value",
+                  "name": "label",
                   "driftCandidate": true,
                   "dataClass": "categorical"
                 },
