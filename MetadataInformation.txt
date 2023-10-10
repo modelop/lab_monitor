@@ -1,0 +1,12 @@
+Description:
+	This file contains the following information about the different vendors for a model:
+		i. VendorID
+		ii. VendorName
+		iii. VendorVersion
+	
+Metadata:
+	VendorID: Vendor67234
+	VendorName: Acme
+	VendorVersion: version_3
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

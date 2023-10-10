@@ -5,5 +5,14 @@
         "metaData": {
             "description": "Externally generated metrics in json format"
         }
+    },
+    {
+        "usage": "ADDITIONAL_ASSET",
+        "assetRole": "REQUIRED_ASSETS",
+        "name": ".+\\.txt",
+        "filename": "MetadataInformation.txt",
+        "metaData": {
+            "description": "Metadata Information in TXT format - used to extract the Vendor ID, Name, and Version Information"
+        }
     }
 ]
