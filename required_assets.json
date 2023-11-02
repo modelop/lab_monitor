@@ -3,7 +3,14 @@
         "usage": "INPUT_ASSET",
         "assetRole": "BASELINE_DATA",
         "metaData": {
-            "description": "Externally generated metrics in json format"
+            "description": "Baseline data in json format"
+        }
+    },
+    {
+        "usage": "INPUT_ASSET",
+        "assetRole": "COMPARATOR_DATA",
+        "metaData": {
+            "description": "Comparator data in json format"
         }
     },
     {
