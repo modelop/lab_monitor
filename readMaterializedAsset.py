@@ -48,8 +48,6 @@ def metrics(data: pd.DataFrame):
 
     finalResult = {}
 
-    finalResult["input_data"] = data.iloc[0].to_dict()
-
     graphTitle = VENDOR_NAME + " - " + VENDOR_VERSION + " - Monitoring Report"
     finalResult[VENDOR_ID] = {"title" : graphTitle, "x_axis_label": "X Axis", "y_axis_label": "Y Axis", "axis_min_default": -1, "axis_max_default":2.6, "data" : { "data1": [1, 2, 3, 4], "data2": [4, 3, 2, 1] }, "categories": ["cat1", "cat2", "cat3", "cat4"]}
 
